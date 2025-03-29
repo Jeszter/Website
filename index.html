@@ -157,13 +157,49 @@
             color: #1e90ff;
             font-weight: bold;
         }
+        #about .about-image {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
 
-        #about .about-image img {
-            border-radius: 10px;
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-        }
+#about .about-image img {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 10px solid #1e90ff;
+    box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+    animation: morph 8s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+@keyframes morph {
+    0% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+    50% {
+        border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+    }
+    100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+}
+
+#about .about-image::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #1e90ff;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    animation: morph 8s ease-in-out infinite;
+    animation-delay: 0.2s;
+    top: -15px;
+    left: -15px;
+    z-index: -1;
+    opacity: 0.7;
+}
 
         #skills .skills-grid {
             display: grid;
@@ -439,8 +475,12 @@
                 <p>CSS</p>
             </div>
             <div class="skill">
-                <i class="fab fa-react"></i>
-                <p>React</p>
+                <i class="fa-brands fa-python"></i>
+                <p>Python</p>
+            </div>
+            <div class="skill">
+                <svg role="img" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg" id="Fastapi--Streamline-Simple-Icons" height="35" width="35"><desc>Fastapi Streamline Icon: https://streamlinehq.com</desc><title>FastAPI</title><path d="M17.5 0.056437499999999995C7.835479166666666 0.055999999999999994 0.00043749999999999995 7.864937499999999 0 17.49825c-0.0014583333333333332 9.634625 7.8341666666666665 17.44575 17.5 17.4453125 9.665833333333333 0.00043749999999999995 17.501458333333332 -7.810687499999999 17.5 -17.4453125 -0.00043749999999999995 -9.633312499999999 -7.835479166666666 -17.442249999999998 -17.5 -17.441666666666666m-1.2089583333333331 7.8973125h11.010416666666666l-11.054895833333333 7.770583333333334h7.55825L7.698541666666666 27.04275q4.297125 -9.543916666666666 8.5925 -19.089" fill="#1e90ff" stroke-width="1.4583"></path></svg>
+                <p>Fastapi</p>
             </div>
             <div class="skill">
                 <i class="fab fa-java"></i>
@@ -466,12 +506,13 @@
         <div class="projects">
             <div class="project">
                 <div class="project-icon">
-                    <i class="fab fa-java"></i>
+                    <i class="fab fa-python"></i>
                 </div>
-                <h3>Java Project</h3>
-                <p>A backend system built with Java and Spring Boot.</p>
-                <a href="#" class="button">Coming soon</a>
+                <h3>NeuroCV</h3>
+                <p>AI resume analyzer built with FastAPI and Python.</p>
+                <a href="https://github.com/Jeszter/NeuroCV" class="button" target="_blank">View Project</a>
             </div>
+            
             <div class="project">
                 <div class="project-icon">
                     <i class="fa-solid fa-robot"></i>
@@ -487,6 +528,15 @@
                 <h3>Game</h3>
                 <p>Dungeon: A Brave Knight's Quest built with Java and Gradle</p>
                 <a href="https://github.com/Jeszter/Dungeon" class="button" target="_blank">View Project</a>
+            </div>
+
+            <div class="project">
+                <div class="project-icon">
+                    <i class="fab fa-java"></i>
+                </div>
+                <h3>Java Project</h3>
+                <p>A backend system built with Java and Spring Boot.</p>
+                <a href="#" class="button">Coming soon</a>
             </div>
         </div>
     </section>
