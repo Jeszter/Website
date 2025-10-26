@@ -53,7 +53,7 @@
         </div>
     </section>
 
-    <section id="skills">
+<section id="skills" class="visible" style="padding-left: 250px;padding-right: 250px;">
         <h2>Skills</h2>
         <div class="skills-grid">
             <div class="skill">
@@ -230,8 +230,8 @@
         </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
+
+<section id="contact" class="visible" style="padding-right: 250px;padding-left: 250px;">        <h2>Contact</h2>
         <div class="contact-container">
             <div class="contact-info">
                 <p>Feel free to reach out to me via email or Discord. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
@@ -344,7 +344,7 @@
                     },
                     move: {
                         enable: true,
-                        speed: 3,
+                        speed: 6,
                         direction: "none",
                         random: false,
                         straight: false,
@@ -486,7 +486,7 @@
 
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+    
             alert('Thank you for your message! I will get back to you soon.');
             this.reset();
         });
