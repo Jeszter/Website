@@ -8,96 +8,207 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
+        .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(10, 20, 40, 0.9);
+    border: 1px solid rgba(30,144,255,0.3);
+    backdrop-filter: blur(12px);
+    color: white;
+    padding: 14px 22px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .35s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast i {
+    color: #1e90ff;
+    font-size: 18px;
+}
+
         :root {
             --primary-color: #1e90ff;
-            --primary-hover: #0077cc;
+            --primary-hover: #0f7ae5;
             --bg-color: #000;
+            --bg-soft: rgba(255, 255, 255, 0.04);
             --card-bg: #111;
             --text-color: #fff;
             --text-secondary: #ccc;
+            --border-soft: rgba(255, 255, 255, 0.08);
+            --header-bg: rgba(5, 10, 20, 0.72);
+            --shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+            --container: 1200px;
+            --header-height: 86px;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+
+        html {
             scroll-behavior: smooth;
         }
 
-        header {
-            background: var(--bg-color);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            padding: 1rem 0;
-            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: min(var(--container), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        header {
             position: fixed;
-            width: 100%;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 1rem 0;
+            background: transparent;
             transition: all 0.3s ease;
         }
 
         header.scrolled {
-            padding: 0.5rem 0;
-            background: rgba(0, 0, 0, 0.9);
+            padding: 0.7rem 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .nav-shell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 1.2rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .brand-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), #57b2ff);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.35);
+            font-size: 0.95rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-color);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-toggle i {
+            font-size: 1.1rem;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
         }
 
         nav ul {
             list-style: none;
-            padding: 0;
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 0 15px;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         nav ul li a {
             color: var(--text-color);
             text-decoration: none;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.98rem;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
             transition: all 0.3s ease;
             position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         nav ul li a:hover,
         nav ul li a.active {
-            color: var(--primary-color);
+            color: #fff;
+            background: rgba(30, 144, 255, 0.14);
+            box-shadow: inset 0 0 0 1px rgba(30, 144, 255, 0.2);
         }
 
         nav ul li a::after {
             content: '';
             position: absolute;
-            width: 0;
+            left: 16px;
+            right: 16px;
+            bottom: 8px;
             height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background-color: var(--primary-color);
-            transition: all 0.3s ease;
+            border-radius: 999px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
         }
 
         nav ul li a:hover::after,
         nav ul li a.active::after {
-            width: 100%;
-            left: 0;
+            transform: scaleX(1);
         }
 
         section {
-            padding: 5rem 2rem;
-            margin: 1rem 0;
+            padding: 6rem 0;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease;
@@ -110,85 +221,76 @@
 
         #home {
             position: relative;
-            background: var(--bg-color);
-            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-top: 60px;
+            padding-top: calc(var(--header-height) + 40px);
+            padding-bottom: 2rem;
         }
 
         #particles-js {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: 1;
         }
 
-        #home h1, #home p, #home .social-buttons {
+        .hero-content {
             position: relative;
             z-index: 2;
+            width: min(900px, calc(100% - 2rem));
+            margin: 0 auto;
         }
 
         #home h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.3rem, 6vw, 4.3rem);
             margin-bottom: 1rem;
             animation: fadeInDown 1.5s ease-in-out;
         }
 
         #home p {
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.45rem);
             margin-bottom: 2rem;
+            color: var(--text-secondary);
             animation: fadeInUp 1.5s ease-in-out 0.5s forwards;
             opacity: 0;
+            max-width: 760px;
+            margin-inline: auto;
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        #home .social-buttons {
+        .social-buttons {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
         .social-button {
             display: inline-flex;
             align-items: center;
-            padding: 12px 25px;
+            justify-content: center;
+            padding: 12px 24px;
             color: var(--text-color);
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 999px;
             transition: all 0.3s ease;
             font-weight: 600;
             box-shadow: 0 4px 15px rgba(30, 144, 255, 0.2);
             background: var(--primary-color);
+            min-width: 150px;
         }
 
         .social-button:hover {
@@ -199,13 +301,13 @@
 
         .social-button i {
             margin-right: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         section h2 {
             text-align: center;
             margin-bottom: 3rem;
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.7rem);
             position: relative;
         }
 
@@ -235,7 +337,7 @@
 
         #about .about-text p {
             margin-bottom: 1.5rem;
-            font-size: 1.1rem;
+            font-size: 1.08rem;
             line-height: 1.8;
         }
 
@@ -246,8 +348,8 @@
 
         #about .about-image {
             position: relative;
-            width: 350px;
-            height: 350px;
+            width: min(350px, 100%);
+            aspect-ratio: 1;
             flex-shrink: 0;
         }
 
@@ -263,15 +365,9 @@
         }
 
         @keyframes morph {
-            0% {
-                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            }
-            50% {
-                border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
-            }
-            100% {
-                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            }
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
         }
 
         #about .about-image::before {
@@ -289,10 +385,10 @@
             opacity: 0.7;
         }
 
-         #skills .skills-grid {
+        #skills .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1.5rem;
+            gap: 1.25rem;
             justify-items: center;
         }
 
@@ -300,16 +396,17 @@
             text-align: center;
             padding: 1.5rem 1rem;
             background: var(--card-bg);
-            border-radius: 10px;
+            border-radius: 18px;
             transition: all 0.3s ease;
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            min-height: 130px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--border-soft);
         }
 
         #skills .skill::before {
@@ -328,15 +425,15 @@
         }
 
         #skills .skill:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.08);
             background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
         }
 
         #skills .skill i, #skills .skill svg {
             font-size: 2.5rem;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             transition: all 0.3s ease;
         }
 
@@ -346,7 +443,6 @@
         }
 
         #skills .skill p {
-            margin: 0;
             color: var(--text-secondary);
             font-weight: 600;
             transition: all 0.3s ease;
@@ -355,21 +451,23 @@
         #skills .skill:hover p {
             color: var(--text-color);
         }
+
         #portfolio .projects {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         #portfolio .project {
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 18px;
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
+            border: 1px solid var(--border-soft);
         }
 
         #portfolio .project::before {
@@ -390,7 +488,7 @@
 
         #portfolio .project:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.18);
         }
 
         .project-content {
@@ -403,7 +501,7 @@
         }
 
         #portfolio .project-icon i {
-            font-size: 3.5rem;
+            font-size: 3.3rem;
             color: var(--primary-color);
             transition: all 0.3s ease;
         }
@@ -414,7 +512,7 @@
 
         #portfolio .project h3 {
             margin: 0.5rem 0;
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             text-align: center;
         }
 
@@ -433,9 +531,9 @@
         }
 
         .tech-tag {
-            background: rgba(30, 144, 255, 0.2);
+            background: rgba(30, 144, 255, 0.16);
             color: var(--primary-color);
-            padding: 0.3rem 0.8rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
@@ -444,18 +542,19 @@
         .project-links {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            flex-wrap: wrap;
+            gap: 0.9rem;
             margin-top: 1.5rem;
         }
 
         .project-link {
             display: inline-flex;
             align-items: center;
-            padding: 0.7rem 1.5rem;
+            padding: 0.75rem 1.4rem;
             background: var(--primary-color);
             color: var(--text-color);
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 999px;
             transition: all 0.3s ease;
             font-weight: 600;
         }
@@ -469,7 +568,7 @@
             margin-right: 0.5rem;
         }
 
-      #contact {
+        #contact {
             text-align: center;
         }
 
@@ -487,16 +586,15 @@
         .contact-info p {
             margin-bottom: 1.5rem;
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         .contact-info ul {
             list-style: none;
-            padding: 0;
         }
 
         .contact-info li {
-            margin: 1.5rem 0;
+            margin: 1rem 0;
         }
 
         .contact-link {
@@ -504,14 +602,15 @@
             align-items: center;
             color: var(--primary-color);
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.08rem;
             transition: all 0.3s ease;
-            padding: 0.5rem 0;
+            padding: 0.35rem 0;
+            word-break: break-word;
         }
 
         .contact-link i {
             margin-right: 0.8rem;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             width: 30px;
             text-align: center;
         }
@@ -524,12 +623,13 @@
         .contact-form {
             background: var(--card-bg);
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 18px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-soft);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             text-align: left;
         }
 
@@ -542,10 +642,10 @@
 
         .form-control {
             width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
             color: var(--text-color);
             font-size: 1rem;
             transition: all 0.3s ease;
@@ -554,7 +654,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.16);
         }
 
         textarea.form-control {
@@ -564,16 +664,16 @@
 
         .submit-btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
+            width: 100%;
+            padding: 0.9rem 2rem;
             background: var(--primary-color);
             color: var(--text-color);
             border: none;
-            border-radius: 5px;
+            border-radius: 999px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
         }
 
         .submit-btn:hover {
@@ -587,6 +687,7 @@
             text-align: center;
             padding: 1rem 0;
             margin-top: 2rem;
+            border-top: 1px solid var(--border-soft);
         }
 
         .scroll-to-top {
@@ -621,378 +722,548 @@
         }
 
         @media (max-width: 992px) {
+            :root {
+                --header-height: 78px;
+            }
+
             #about .about-content {
                 flex-direction: column;
                 text-align: center;
             }
-            
-            #about .about-image {
-                width: 300px;
-                height: 300px;
-            }
-            
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-        }
 
-
-        @media (max-width: 992px) {
-            #about .about-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            #about .about-image {
-                width: 300px;
-                height: 300px;
-            }
-            
             .contact-container {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 768px) {
+            :root {
+                --header-height: 74px;
+            }
+
             header {
-                padding: 0.8rem 0;
+                padding: 0.85rem 0;
             }
-            
-            nav ul li {
-                margin: 0 10px;
+
+            .nav-shell {
+                border-radius: 24px;
+                padding: 0.75rem 0.9rem;
+                position: relative;
             }
-            
-            #home h1 {
-                font-size: 2.5rem;
+
+            .menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
             }
-            
-            #home p {
-                font-size: 1.2rem;
+
+            nav {
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-12px);
+                transition: all 0.3s ease;
+                pointer-events: none;
             }
-            
+
+            nav.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            nav ul {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.35rem;
+                padding: 0.7rem;
+                background: rgba(9, 14, 24, 0.96);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 24px;
+                box-shadow: var(--shadow);
+            }
+
+            nav ul li a {
+                width: 100%;
+                justify-content: flex-start;
+                padding: 0.95rem 1rem;
+                border-radius: 16px;
+            }
+
+            nav ul li a::after {
+                display: none;
+            }
+
             section {
-                padding: 4rem 1.5rem;
+                padding: 4.5rem 0;
             }
-            
+
+            #home {
+                min-height: auto;
+                padding-top: calc(var(--header-height) + 64px);
+                padding-bottom: 4rem;
+            }
+
             #portfolio .projects {
                 grid-template-columns: 1fr;
             }
-            
+
             #skills .skills-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-            
-            .social-button {
-                padding: 10px 20px;
-                font-size: 0.9rem;
+
+            .project-content {
+                padding: 1.4rem;
             }
         }
 
         @media (max-width: 576px) {
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
+            .container {
+                width: min(var(--container), calc(100% - 1rem));
             }
-            
+
+            .brand span:last-child {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
             #home h1 {
-                font-size: 2rem;
+                font-size: 2.1rem;
             }
-            
+
             #home p {
                 font-size: 1rem;
             }
-            
+
             .social-buttons {
                 flex-direction: column;
-                align-items: center;
-                gap: 10px;
+                align-items: stretch;
             }
-            
+
             .social-button {
-                width: 200px;
-                justify-content: center;
+                width: 100%;
             }
-            
+
+            #skills .skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.9rem;
+            }
+
+            #skills .skill {
+                min-height: 115px;
+                padding: 1rem 0.75rem;
+            }
+
             section h2 {
-                font-size: 2rem;
+                font-size: 1.9rem;
             }
-            
-            #about .about-image {
-                width: 250px;
-                height: 250px;
+
+            .contact-form {
+                padding: 1rem;
+            }
+
+            .project-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .project-link {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
     <header id="main-header">
-        <nav>
-            <ul>
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <div class="nav-shell">
+                <a href="#home" class="brand" aria-label="Kyrylo portfolio home">
+                    <span class="brand-badge"> 
+<i class="fa-solid fa-compass"></i>
+
+                    </span>
+                    <span>Kyrylo Tarasov</span>
+                </a>
+
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#home" class="nav-link active">Home</a></li>
+                        <li><a href="#about" class="nav-link">About</a></li>
+                        <li><a href="#skills" class="nav-link">Skills</a></li>
+                        <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                        <li><a href="#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </header>
 
     <section id="home">
         <div id="particles-js"></div>
-        <h1>Hi there, I'm Kyrylo</h1>
-        <p>I'm a student at TUKE, passionate about coding and creativity.</p>
-        <div class="social-buttons">
-            <a href="https://github.com/Jeszter" class="social-button github-button" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a href="https://www.linkedin.com/in/kyrylo-tarasov/" class="social-button linkedin-button" target="_blank">
-                <i class="fab fa-linkedin"></i> LinkedIn
-            </a>
-            <a href="https://www.instagram.com/jeszter.tp/" class="social-button instagram-button" target="_blank">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
+        <div class="hero-content">
+            <h1>Hi there, I'm Kyrylo</h1>
+            <p>I'm a student at TUKE, passionate about coding and creativity.</p>
+            <div class="social-buttons">
+                <a href="https://github.com/Jeszter" class="social-button github-button" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/kyrylo-tarasov/" class="social-button linkedin-button" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="https://www.instagram.com/jeszter.tp/" class="social-button instagram-button" target="_blank">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
         </div>
     </section>
 
     <section id="about">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <p>I'm a <span class="highlight">code enthusiast</span> with a passion for building things that matter. Whether it's crafting elegant algorithms or designing user-friendly interfaces, I love turning ideas into reality.</p>
-                <p>When I'm not coding, you can find me exploring new board games, sketching out creative designs, or diving into the latest tech trends.</p>
-                <p>I believe in <span class="highlight">continuous learning</span> and always strive to push my boundaries. My goal is to create solutions that are not only functional but also impactful.</p>
-            </div>
-            <div class="about-image">
-                <img src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/4490f07087a2ac3aaa95514294614825-1743265503940/bc5b66f6-1bfd-4f85-bdeb-4120e18ce265.jpg" alt="Kyrylo Tarasov">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a <span class="highlight">code enthusiast</span> with a passion for building things that matter. Whether it's crafting elegant algorithms or designing user-friendly interfaces, I love turning ideas into reality.</p>
+                    <p>When I'm not coding, you can find me exploring new board games, sketching out creative designs, or diving into the latest tech trends.</p>
+                    <p>I believe in <span class="highlight">continuous learning</span> and always strive to push my boundaries. My goal is to create solutions that are not only functional but also impactful.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/4490f07087a2ac3aaa95514294614825-1743265503940/bc5b66f6-1bfd-4f85-bdeb-4120e18ce265.jpg" alt="Kyrylo Tarasov">
+                </div>
             </div>
         </div>
     </section>
 
-<section id="skills" class="visible" style="padding-left: 250px;padding-right: 250px;">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skill">
-                <i class="fab fa-git-alt"></i>
-                <p>Git</p>
-            </div>
-            <div class="skill">
-                <i class="fab fa-linux"></i>
-                <p>Linux</p>
-            </div>
-            <div class="skill">
-                <i class="fab fa-html5"></i>
-                <p>HTML</p>
-            </div>
-            <div class="skill">
-                <i class="fab fa-css3-alt"></i>
-                <p>CSS</p>
-            </div>
-            <div class="skill">
-                <i class="fa-brands fa-python"></i>
-                <p>Python</p>
-            </div>
-            <div class="skill">
-                <svg role="img" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg" id="Fastapi--Streamline-Simple-Icons" height="35" width="35"><desc>Fastapi Streamline Icon: https://streamlinehq.com</desc><title>FastAPI</title><path d="M17.5 0.056437499999999995C7.835479166666666 0.055999999999999994 0.00043749999999999995 7.864937499999999 0 17.49825c-0.0014583333333333332 9.634625 7.8341666666666665 17.44575 17.5 17.4453125 9.665833333333333 0.00043749999999999995 17.501458333333332 -7.810687499999999 17.5 -17.4453125 -0.00043749999999999995 -9.633312499999999 -7.835479166666666 -17.442249999999998 -17.5 -17.441666666666666m-1.2089583333333331 7.8973125h11.010416666666666l-11.054895833333333 7.770583333333334h7.55825L7.698541666666666 27.04275q4.297125 -9.543916666666666 8.5925 -19.089" fill="#1e90ff" stroke-width="1.4583"></path></svg>
-                <p>FastAPI</p>
-            </div>
-            <div class="skill">
-                <i class="fab fa-java"></i>
-                <p>Java</p>
-            </div>
-            <div class="skill">
-                <i class="fas fa-database"></i>
-                <p>PostgreSQL</p>
-            </div>
-            <div class="skill">
-                <i class="fas fa-leaf"></i>
-                <p>Spring</p>
-            </div>
-            <div class="skill">
-                <i class="fas fa-copyright"></i>
-                <p>C</p>
+    <section id="skills">
+        <div class="container">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill">
+                    <i class="fab fa-git-alt"></i>
+                    <p>Git</p>
+                </div>
+                <div class="skill">
+                    <i class="fab fa-linux"></i>
+                    <p>Linux</p>
+                </div>
+                <div class="skill">
+                    <i class="fab fa-html5"></i>
+                    <p>HTML</p>
+                </div>
+                <div class="skill">
+                    <i class="fab fa-css3-alt"></i>
+                    <p>CSS</p>
+                </div>
+                <div class="skill">
+                    <i class="fa-brands fa-python"></i>
+                    <p>Python</p>
+                </div>
+                <div class="skill">
+                    <svg role="img" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg" height="35" width="35"><title>FastAPI</title><path d="M17.5 0.056437499999999995C7.835479166666666 0.055999999999999994 0.00043749999999999995 7.864937499999999 0 17.49825c-0.0014583333333333332 9.634625 7.8341666666666665 17.44575 17.5 17.4453125 9.665833333333333 0.00043749999999999995 17.501458333333332 -7.810687499999999 17.5 -17.4453125 -0.00043749999999999995 -9.633312499999999 -7.835479166666666 -17.442249999999998 -17.5 -17.441666666666666m-1.2089583333333331 7.8973125h11.010416666666666l-11.054895833333333 7.770583333333334h7.55825L7.698541666666666 27.04275q4.297125 -9.543916666666666 8.5925 -19.089" fill="#1e90ff"></path></svg>
+                    <p>FastAPI</p>
+                </div>
+                <div class="skill">
+                    <i class="fab fa-java"></i>
+                    <p>Java</p>
+                </div>
+                <div class="skill">
+                    <i class="fas fa-database"></i>
+                    <p>PostgreSQL</p>
+                </div>
+                <div class="skill">
+                    <i class="fas fa-leaf"></i>
+                    <p>Spring</p>
+                </div>
+                <div class="skill">
+                    <i class="fas fa-copyright"></i>
+                    <p>C</p>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="portfolio">
-        <h2>Portfolio</h2>
-        <div class="projects">
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fa-solid fa-city"></i>
-                    </div>
-                    <h3>DigitalKraj</h3>
-                    <p>Modern portal that informs residents, streamlines citizen-government processes, and serves as a digital regional guide. (Fullstack)</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">HTML/CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">FastAPI</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/bromscandium/digitalny-kraj" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fab fa-python"></i>
-                    </div>
-                    <h3>NeuroCV</h3>
-                    <p>AI resume analyzer built with FastAPI and Python that helps job seekers optimize their resumes for better visibility.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">FastAPI</span>
-                        <span class="tech-tag">AI/ML</span>
-                        <span class="tech-tag">NLP</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Jeszter/NeuroCV" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
+        <div class="container">
+            <h2>Portfolio</h2>
+            <div class="projects">
+
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fa-brands fa-ethereum"></i>
+                        </div>
+                        <h3>dEST Platform</h3>
+                        <p>Decentralized Real-Estate Tokenization Platform enabling fractional ownership of properties through blockchain technology.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Blockchain</span>
+                            <span class="tech-tag">Solidity</span>
+                            <span class="tech-tag">Web3</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Jeszter/eth-bratislava" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
-                    <h3>Discord Bot</h3>
-                    <p>Feature-rich Discord bot with moderation, utility, and entertainment features, built with JavaScript and Discord.js.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">Discord.js</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Jeszter/DiscordBot" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
+
+
+
+                <div class="project">
+    <div class="project-content">
+        <div class="project-icon">
+            <i class="fa-solid fa-microchip"></i>
+        </div>
+        <h3>EchoLabs</h3>
+        <p>Modern AI platform prototype built with React, Vite and Tailwind. Includes responsive layouts, modular architecture and fast UI rendering.</p>
+        <div class="project-tech">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Vite</span>
+            <span class="tech-tag">Tailwind</span>
+            <span class="tech-tag">Responsive UI</span>
+        </div>
+        <div class="project-links">
+            <a href="https://github.com/Jeszter/EchoLabs" class="project-link" target="_blank">
+                <i class="fab fa-github"></i> Code
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="project">
+    <div class="project-content">
+        <div class="project-icon">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+        <h3>Herbify</h3>
+        <p>Game-like Android app for plant discovery with map exploration, scanning mechanics, collection system, ECO rewards and player progression.</p>
+        <div class="project-tech">
+            <span class="tech-tag">Kotlin</span>
+            <span class="tech-tag">Jetpack Compose</span>
+            <span class="tech-tag">CameraX</span>
+            <span class="tech-tag">OSMDroid</span>
+        </div>
+        <div class="project-links">
+            <a href="https://github.com/Jeszter/Herbify" class="project-link" target="_blank">
+                <i class="fab fa-github"></i> Code
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="project">
+    <div class="project-content">
+        <div class="project-icon">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3>UrbanMind</h3>
+        <p>AI-powered immigration assistant helping users with CV analysis, document scanning, job search and multilingual support.</p>
+        <div class="project-tech">
+            <span class="tech-tag">AI</span>
+            <span class="tech-tag">NLP</span>
+            <span class="tech-tag">Web App</span>
+            <span class="tech-tag">Automation</span>
+        </div>
+        <div class="project-links">
+            <a href="https://github.com/Jeszter/UrbanMind" class="project-link" target="_blank">
+                <i class="fab fa-github"></i> Code
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="project">
+    <div class="project-content">
+        <div class="project-icon">
+            <i class="fa-solid fa-list-check"></i>
+        </div>
+        <h3>Quiz Builder</h3>
+        <p>Full-stack quiz creation platform with REST API, Next.js frontend, Prisma ORM and TypeScript-based architecture.</p>
+        <div class="project-tech">
+            <span class="tech-tag">Next.js</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">Prisma</span>
+        </div>
+        <div class="project-links">
+            <a href="https://github.com/Jeszter/JS-engineer-test" class="project-link" target="_blank">
+                <i class="fab fa-github"></i> Code
+            </a>
+        </div>
+    </div>
+</div>
+
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fa-solid fa-city"></i>
+                        </div>
+                        <h3>DigitalKraj</h3>
+                        <p>Modern portal that informs residents, streamlines citizen-government processes, and serves as a digital regional guide. (Fullstack)</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bromscandium/digitalny-kraj" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fa-solid fa-dungeon"></i>
-                    </div>
-                    <h3>Dungeon Game</h3>
-                    <p>Dungeon: A Brave Knight's Quest - A Java-based adventure game with procedural level generation and turn-based combat.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Java</span>
-                        <span class="tech-tag">Gradle</span>
-                        <span class="tech-tag">Game Dev</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Jeszter/Dungeon" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fab fa-java"></i>
-                    </div>
-                    <h3>Connect4 Game</h3>
-                    <p>A classic Connect Four game implementation with Java and Spring Boot, featuring AI opponent and online multiplayer.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Java</span>
-                        <span class="tech-tag">Spring Boot</span>
-                        <span class="tech-tag">WebSockets</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Jeszter/Connect4" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h3>NeuroCV</h3>
+                        <p>AI resume analyzer built with FastAPI and Python that helps job seekers optimize their resumes for better visibility.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">AI/ML</span>
+                            <span class="tech-tag">NLP</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Jeszter/NeuroCV" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="project">
-                <div class="project-content">
-                    <div class="project-icon">
-                        <i class="fa-brands fa-ethereum"></i>
-                    </div>
-                    <h3>dEST Platform</h3>
-                    <p>Decentralized Real-Estate Tokenization Platform enabling fractional ownership of properties through blockchain technology.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Blockchain</span>
-                        <span class="tech-tag">Solidity</span>
-                        <span class="tech-tag">Web3</span>
-                        <span class="tech-tag">React</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/bromscandium/eth-bratislava" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i> Code
-                        </a>
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3>Discord Bot</h3>
+                        <p>Feature-rich Discord bot with moderation, utility, and entertainment features, built with JavaScript and Discord.js.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Discord.js</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Jeszter/DiscordBot" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
                     </div>
                 </div>
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fa-solid fa-dungeon"></i>
+                        </div>
+                        <h3>Dungeon Game</h3>
+                        <p>Dungeon: A Brave Knight's Quest - A Java-based adventure game with procedural level generation and turn-based combat.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">Gradle</span>
+                            <span class="tech-tag">Game Dev</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Jeszter/Dungeon" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-content">
+                        <div class="project-icon">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <h3>Connect4 Game</h3>
+                        <p>A classic Connect Four game implementation with Java and Spring Boot, featuring AI opponent and online multiplayer.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">Spring Boot</span>
+                            <span class="tech-tag">WebSockets</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Jeszter/Connect4" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </section>
 
-
-<section id="contact" class="visible" style="padding-right: 250px;padding-left: 250px;">        <h2>Contact</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <p>Feel free to reach out to me via email or Discord. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
-                <ul>
-                    <li>
-                        <a href="mailto:kyrylotarasov1@gmail.com" class="contact-link">
-                            <i class="fas fa-envelope"></i> kyrylotarasov1@gmail.com
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://discord.com/users/uuyt" class="contact-link" target="_blank">
-                            <i class="fab fa-discord"></i> uuyt
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/Jeszter" class="contact-link" target="_blank">
-                            <i class="fab fa-github"></i> Jeszter
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.linkedin.com/in/kyrylo-tarasov/" class="contact-link" target="_blank">
-                            <i class="fab fa-linkedin"></i> Kyrylo Tarasov
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="contact-form">
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
+    <section id="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <p>Feel free to reach out to me via email or Discord. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <ul>
+                        <li>
+                            <a href="mailto:kyrylotarasov1@gmail.com" class="contact-link">
+                                <i class="fas fa-envelope"></i> kyrylotarasov1@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://discord.com/users/uuyt" class="contact-link" target="_blank">
+                                <i class="fab fa-discord"></i> uuyt
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Jeszter" class="contact-link" target="_blank">
+                                <i class="fab fa-github"></i> Jeszter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/kyrylo-tarasov/" class="contact-link" target="_blank">
+                                <i class="fab fa-linkedin"></i> Kyrylo Tarasov
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -1006,7 +1277,6 @@
     </button>
 
     <script>
-        // Particles.js initialization
         document.addEventListener("DOMContentLoaded", function() {
             particlesJS("particles-js", {
                 particles: {
@@ -1114,14 +1384,53 @@
                 retina_detect: true
             });
         });
+
         document.addEventListener("DOMContentLoaded", function() {
             const scrollToTopButton = document.getElementById("scrollToTop");
+            const menuToggle = document.getElementById("menuToggle");
+            const mainNav = document.getElementById("mainNav");
+            const navLinks = document.querySelectorAll('.nav-link');
+            const header = document.getElementById('main-header');
+
+            const closeMenu = () => {
+                mainNav.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            };
+
+            const toggleMenu = () => {
+                const isOpen = mainNav.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+                menuToggle.innerHTML = isOpen ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-bars"></i>';
+            };
+
+            menuToggle.addEventListener('click', toggleMenu);
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        closeMenu();
+                    }
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    closeMenu();
+                }
+            });
 
             window.addEventListener("scroll", function() {
                 if (window.scrollY > 300) {
                     scrollToTopButton.classList.add("visible");
                 } else {
                     scrollToTopButton.classList.remove("visible");
+                }
+
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
             });
 
@@ -1134,28 +1443,17 @@
         });
 
         window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        window.addEventListener('scroll', function() {
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');
-            
             let current = '';
-            
+
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
+                if (window.scrollY >= sectionTop - 220) {
                     current = section.getAttribute('id');
                 }
             });
-            
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === '#' + current) {
@@ -1163,20 +1461,23 @@
                 }
             });
         });
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
+                if (!targetId || targetId === '#') return;
                 const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
+                if (!targetElement) return;
+
+                e.preventDefault();
+
+                const headerOffset = window.innerWidth <= 768 ? 90 : 100;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             });
         });
 
@@ -1196,12 +1497,41 @@
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
         });
+</script>
 
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
-    </script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(function(){
+emailjs.init({
+publicKey: "bVpOZ90jMlQdvbTA-"
+});
+})();
+
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+e.preventDefault();
+
+emailjs.send("workKytryloTarasov22005", "template_so7m1q7", {
+from_name: document.getElementById("name").value,
+from_email: document.getElementById("email").value,
+subject: document.getElementById("subject").value,
+message: document.getElementById("message").value
+}).then(function() {
+const toast = document.getElementById("toast");
+toast.classList.add("show");
+
+setTimeout(() => {
+    toast.classList.remove("show");
+}, 3000);
+document.getElementById('contactForm').reset();
+}, function(error) {
+console.error(error);
+alert("Failed to send message");
+});
+});
+</script>
+<div id="toast" class="toast">
+    <i class="fas fa-circle-check"></i>
+    <span>Message sent successfully!</span>
+</div>
 </body>
 </html>
